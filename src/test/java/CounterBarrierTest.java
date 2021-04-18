@@ -1,6 +1,5 @@
 import org.junit.Test;
 import ru.mipt.barriers.CounterBarrier;
-
 import java.lang.reflect.Field;
 import static org.junit.jupiter.api.Assertions.*;
 

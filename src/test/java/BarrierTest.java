@@ -1,11 +1,7 @@
 import org.junit.Test;
 import ru.mipt.barriers.Barrier;
-import ru.mipt.barriers.CounterBarrier;
-
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.concurrent.atomic.AtomicIntegerArray;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BarrierTest {
@@ -14,19 +10,19 @@ public class BarrierTest {
         int n = 8;
         Barrier barrier = new Barrier(n);
         barrier.run();
-        List<Integer> queue = getQueue(barrier);
-        for(int i = 2; i < n + 2; i++) {
+        AtomicIntegerArray queue = getQueue(barrier);
+        for(int i = 1; i < n; i++) {
             assertEquals(queue.get(i), 2);
         }
 
     }
 
-    private List<Integer> getQueue(Barrier barrier){
-        List<Integer> result = new ArrayList<>();
+    private AtomicIntegerArray getQueue(Barrier barrier){
+        AtomicIntegerArray result = null;
         try {
             Field field = barrier.getClass().getDeclaredField("queue");
             field.setAccessible(true);
-            result = (List<Integer>) field.get(barrier);
+            result = (AtomicIntegerArray) field.get(barrier);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
