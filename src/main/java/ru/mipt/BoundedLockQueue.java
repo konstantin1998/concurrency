@@ -1,6 +1,8 @@
 package ru.mipt;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -16,6 +18,7 @@ public class BoundedLockQueue<T> implements Queue<T> {
 
     private final AtomicInteger size = new AtomicInteger();
     private final int capacity;
+    private final List<T> items = new ArrayList<>();
 
     public BoundedLockQueue(int capacity) {
         this.capacity = capacity;
@@ -53,9 +56,10 @@ public class BoundedLockQueue<T> implements Queue<T> {
     }
 
     private void doEnq(T item) {
-        Node e = new Node(item);
-        tail.next = e;
-        tail = e;
+//        Node e = new Node(item);
+//        tail.next = e;
+//        tail = e;
+        items.add(item);
     }
 
     private void signalDequeuers() {
@@ -107,13 +111,11 @@ public class BoundedLockQueue<T> implements Queue<T> {
     }
 
     private T doDeq() {
-        T result = head.next.value;
-        head = head.next;
-        return result;
+        return items.remove(0);
     }
 
     private void awaitForItems() throws InterruptedException {
-        while(head.next == null) {
+        while(size.get() == 0) {
             notEmptyCondition.await();
         }
     }
