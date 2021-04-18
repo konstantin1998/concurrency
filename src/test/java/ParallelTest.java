@@ -1,6 +1,5 @@
 import org.junit.Test;
-import ru.mipt.BoundedLockQueue;
-
+import ru.mipt.boundedQueue.BoundedLockQueue;
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -75,29 +74,33 @@ public class ParallelTest {
 
     @Test
     public void enqAndDeqTest() {
-        BoundedLockQueue<Integer> queue = initQueue();
-        Runnable enq = () -> {
-            queue.enq(1);
-        };
-        Thread enqueuer1 = new Thread(enq);
-        Thread enqueuer2 = new Thread(enq);
+        int times = 10;
+        for(int i = 0; i < times; i++) {
+            BoundedLockQueue<Integer> queue = initQueue();
+            Runnable enq = () -> {
+                queue.enq(1);
+            };
+            Thread enqueuer1 = new Thread(enq);
+            Thread enqueuer2 = new Thread(enq);
 
-        Thread dequeuer1 = new Thread(queue::deq);
-        Thread dequeuer2 = new Thread(queue::deq);
+            Thread dequeuer1 = new Thread(queue::deq);
+            Thread dequeuer2 = new Thread(queue::deq);
 
-        enqueuer1.start();
-        enqueuer2.start();
-        dequeuer1.start();
-        dequeuer2.start();
-        try {
-            enqueuer1.join();
-            enqueuer2.join();
-            dequeuer1.join();
-            dequeuer2.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            enqueuer1.start();
+            enqueuer2.start();
+            dequeuer1.start();
+            dequeuer2.start();
+            try {
+                enqueuer1.join();
+                enqueuer2.join();
+                dequeuer1.join();
+                dequeuer2.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            assertEquals(0, getSize(queue));
         }
 
-        assertEquals(0, getSize(queue));
     }
 }

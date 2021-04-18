@@ -1,4 +1,4 @@
-package ru.mipt;
+package ru.mipt.boundedQueue;
 
 
 import java.util.ArrayList;
@@ -8,8 +8,6 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class BoundedLockQueue<T> implements Queue<T> {
-    private Node head = new Node(null);
-    private Node tail = head;
 
     private final ReentrantLock enqLock = new ReentrantLock();
     private final ReentrantLock deqLock = new ReentrantLock();
@@ -24,15 +22,6 @@ public class BoundedLockQueue<T> implements Queue<T> {
         this.capacity = capacity;
     }
 
-    protected class Node {
-        public final T value;
-        public volatile Node next;
-
-        public Node(T x){
-            value = x;
-            next = null;
-        }
-    }
     @Override
     public void enq(T item) {
         boolean mustWakeDequeuers = false;
@@ -56,9 +45,6 @@ public class BoundedLockQueue<T> implements Queue<T> {
     }
 
     private void doEnq(T item) {
-//        Node e = new Node(item);
-//        tail.next = e;
-//        tail = e;
         items.add(item);
     }
 

@@ -1,6 +1,5 @@
 import org.junit.Test;
-import ru.mipt.BoundedLockQueue;
-
+import ru.mipt.boundedQueue.BoundedLockQueue;
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicInteger;
 
