@@ -1,3 +1,5 @@
+package queue;
+
 import org.junit.Test;
 import ru.mipt.boundedQueue.BoundedLockQueue;
 import java.lang.reflect.Field;

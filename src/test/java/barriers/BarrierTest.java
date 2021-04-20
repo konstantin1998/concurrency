@@ -1,3 +1,5 @@
+package barriers;
+
 import org.junit.Test;
 import ru.mipt.barriers.Barrier;
 import java.lang.reflect.Field;
