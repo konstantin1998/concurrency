@@ -3,6 +3,7 @@ package account;
 import org.junit.Test;
 import ru.mipt.account.SavingsAccount;
 import java.lang.reflect.Field;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -97,5 +98,39 @@ public class SavingsAccountTest {
         }
 
         assertEquals(balance, getBalance(account));
+    }
+
+    @Test
+    public void makeSurePreferredTransactionsFinishBeforeOrdinary() {
+        AtomicBoolean isOrdinaryTransactionLast = new AtomicBoolean(false);
+        int balance = 100;
+        SavingsAccount account = new SavingsAccount(balance);
+        Runnable preferredWithdraw = () -> {
+            int n = 10;
+            account.withdrawPreferred(n);
+            isOrdinaryTransactionLast.getAndSet(false);
+        };
+        Runnable withdraw = () -> {
+            int n = 10;
+            account.withdraw(n);
+            isOrdinaryTransactionLast.getAndSet(true);
+        };
+        Thread withdrawPreferredThread1 = new Thread(preferredWithdraw);
+        Thread withdrawPreferredThread2 = new Thread(preferredWithdraw);
+        Thread withdrawThread = new Thread(withdraw);
+
+        withdrawPreferredThread1.start();
+        withdrawPreferredThread2.start();
+        withdrawThread.start();
+
+        try {
+            withdrawThread.join();
+            withdrawPreferredThread1.join();
+            withdrawPreferredThread2.join();
+        } catch(InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(isOrdinaryTransactionLast.get());
     }
 }
