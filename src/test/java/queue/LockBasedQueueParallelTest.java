@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ParallelTest {
+public class LockBasedQueueParallelTest {
 
     @Test
     public void enqTest() {
