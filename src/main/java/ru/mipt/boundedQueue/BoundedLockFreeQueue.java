@@ -22,9 +22,16 @@ public class BoundedLockFreeQueue<T> implements Queue<T> {
 
     @Override
     public void enq(T item) {
-        waitForSlots();
-        int n = tail.getAndIncrement();
-        items.set(n % maxSize, item);
+
+        while(true) {
+            if(!isFull()) {
+                int n = tail.get();
+                if(tail.compareAndSet(n, n + 1)) {
+                    items.set(n % maxSize, item);
+                    return;
+                }
+            }
+        }
     }
 
     private void waitForSlots() {
@@ -33,9 +40,22 @@ public class BoundedLockFreeQueue<T> implements Queue<T> {
 
     @Override
     public T deq() {
-        waitForItems();
-        int n = head.getAndIncrement();
-        return items.get(n % maxSize);
+        while(true) {
+            if(!isEmpty()) {
+                int n = head.get();
+                if(head.compareAndSet(n, n + 1)) {
+                    return items.get(n % maxSize);
+                }
+            }
+        }
+    }
+
+    private boolean isEmpty() {
+        return tail.get() - head.get() <= 0;
+    }
+
+    private boolean isFull() {
+        return tail.get() - head.get() >= maxSize;
     }
 
     private void waitForItems() {
