@@ -1,5 +1,4 @@
-package ru.mipt.boundedQueue;
-
+package ru.mipt.medium.queue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class BoundedLockQueue<T> implements Queue<T> {
+public class BoundedLockQueue<T> implements ConcurrentQueue<T> {
 
     private final ReentrantLock enqLock = new ReentrantLock();
     private final ReentrantLock deqLock = new ReentrantLock();
