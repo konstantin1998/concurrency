@@ -4,8 +4,7 @@ import org.junit.Test;
 import ru.mipt.Token;
 import ru.mipt.medium.FieldMedium;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FieldMediumTest {
     @Test
@@ -23,15 +22,49 @@ public class FieldMediumTest {
 
     @Test
     public void mustWaitWhenTokenFieldIsEmpty() {
+        //given
         FieldMedium medium = new FieldMedium();
-        assertDoesNotThrow(() -> ThreadRunner.makeThreadsWaitForPoll(medium));
+        Thread thread = new Thread(() -> {
+            try {
+                medium.poll();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+        //when
+        await();
+        //then
+        assertTrue(thread.isAlive());
+    }
+
+    private void await() {
+        int time = 10;
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void mustWaitWhenTokenSlotIsOccupied() throws InterruptedException {
+        //given
         FieldMedium medium = new FieldMedium();
         Token token = new Token();
         medium.push(token);
-        assertDoesNotThrow(() -> ThreadRunner.makeThreadsWaitForPush(medium));
+        Thread thread = new Thread(() -> {
+            try {
+                medium.push(token);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        //when
+        thread.start();
+        await();
+        //then
+        assertTrue(thread.isAlive());
+
     }
 }

@@ -11,12 +11,12 @@ public class QueueMedium implements TokenMedium {
     }
 
     @Override
-    public void push(Token token) {
+    public void push(Token token) throws InterruptedException {
         queue.enq(token);
     }
 
     @Override
-    public Token poll() {
+    public Token poll() throws InterruptedException {
         return queue.deq();
     }
 }

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class QueueMediumTest {
     @Test
-    public void mustWaitWhenExecutedSequentially() {
+    public void mustWaitWhenExecutedSequentially() throws InterruptedException {
         //given
         int capacity = 10;
         ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
@@ -27,20 +27,54 @@ public class QueueMediumTest {
 
     @Test
     public void mustWaitWhenQueueIsEmpty() {
+        //given
         int capacity = 10;
         ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
-        QueueMedium queueMedium = new QueueMedium(queue);
-        assertDoesNotThrow(() -> ThreadRunner.makeThreadsWaitForPoll(queueMedium));
+        QueueMedium medium = new QueueMedium(queue);
+        Thread thread = new Thread(() -> {
+            try {
+                medium.poll();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        //when
+        thread.start();
+        await();
+        //then
+        assertTrue(thread.isAlive());
+    }
+
+    private void await() {
+        int time = 10;
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void mustWaitWhenTokenSlotIsOccupied() {
+    public void mustWaitWhenTokenSlotIsOccupied() throws InterruptedException {
+        //given
         int capacity = 1;
         ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
         Token token = new Token();
         queue.enq(token);
-        QueueMedium queueMedium = new QueueMedium(queue);
-        assertDoesNotThrow(() -> ThreadRunner.makeThreadsWaitForPush(queueMedium));
+
+        QueueMedium medium = new QueueMedium(queue);
+        Thread thread = new Thread(() -> {
+            try {
+                medium.push(token);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+        //when
+        await();
+        //then
+        assertTrue(thread.isAlive());
     }
 
 }

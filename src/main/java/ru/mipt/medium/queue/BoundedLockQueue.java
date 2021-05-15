@@ -22,7 +22,7 @@ public class BoundedLockQueue<T> implements ConcurrentQueue<T> {
     }
 
     @Override
-    public void enq(T item) {
+    public void enq(T item) throws InterruptedException {
         boolean mustWakeDequeuers = false;
         enqLock.lock();
 
@@ -32,9 +32,7 @@ public class BoundedLockQueue<T> implements ConcurrentQueue<T> {
             if(size.getAndIncrement() == 0) {
                 mustWakeDequeuers = true;
             }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        } finally {
+        }  finally {
             enqLock.unlock();
         }
 
@@ -63,7 +61,7 @@ public class BoundedLockQueue<T> implements ConcurrentQueue<T> {
     }
 
     @Override
-    public T deq() {
+    public T deq() throws InterruptedException {
         T result = null;
         boolean mustWakeEnqueuers = false;
         deqLock.lock();
@@ -74,9 +72,7 @@ public class BoundedLockQueue<T> implements ConcurrentQueue<T> {
                 mustWakeEnqueuers = true;
             }
 
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        } finally {
+        }  finally {
             deqLock.unlock();
         }
 

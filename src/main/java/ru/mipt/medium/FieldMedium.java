@@ -49,7 +49,6 @@ public class FieldMedium implements TokenMedium{
 
     private void waitForToken() throws InterruptedException {
         while(token == null) {
-
             notEmpty.await();
         }
     }
