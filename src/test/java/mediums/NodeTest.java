@@ -16,7 +16,7 @@ public class NodeTest {
         input.push(new Token());
         TokenMedium output = new FieldMedium();
         Node node = new Node(input, output);
-        node.run();
+        node.start();
         Thread.sleep(10);
         assertTrue(node.isAlive());
         node.stop();

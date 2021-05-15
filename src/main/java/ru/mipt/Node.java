@@ -23,13 +23,13 @@ public class Node {
         });
     }
 
-    public Node(TokenMedium input, TokenMedium output, Runnable task) {
-        this.input = input;
-        this.output = output;
+    public Node(Runnable task) {
+        input = null;
+        output = null;
         thread = new Thread(task);
     }
 
-    public void run() {
+    public void start() {
         thread.start();
     }
 
