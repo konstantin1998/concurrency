@@ -11,17 +11,17 @@ import java.util.List;
 
 public class TokenRingInitializer {
 
-    public TokenRing getRing(int n, double load) {
+    public TokenRing getRing(int n, int nTokens) {
         List<TokenMedium> mediums = getMediums(n);
         TokenRing tokenRing = new TokenRing(mediums);
-        initializeWithTokens(tokenRing, (int) (load * (mediums.size() - 1)));
+        initializeWithTokens(tokenRing, nTokens);
         return tokenRing;
     }
 
-    public TokenRing getRing(int n, double load, int capacity) {
+    public TokenRing getRing(int n, int nTokens, int capacity) {
         List<TokenMedium> mediums = getMediums(n,capacity);
         TokenRing tokenRing = new TokenRing(mediums);
-        initializeWithTokens(tokenRing, (int) (load * (mediums.size() * capacity - 1)));
+        initializeWithTokens(tokenRing, nTokens);
         return tokenRing;
     }
 

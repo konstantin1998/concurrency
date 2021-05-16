@@ -72,8 +72,6 @@ public class TokenRingTest {
 
         double throughput = tokenRing.getThroughput();
         double latency = tokenRing.getLatency();
-        System.out.println("throughput: " + throughput);
-        System.out.println("latency: " + latency);
 
         assertTrue(throughput > 0);
         assertTrue(latency > 0);
