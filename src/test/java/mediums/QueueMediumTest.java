@@ -2,10 +2,7 @@ package mediums;
 
 import org.junit.Test;
 import ru.mipt.Token;
-import ru.mipt.medium.FieldMedium;
 import ru.mipt.medium.QueueMedium;
-import ru.mipt.medium.queue.BoundedLockQueue;
-import ru.mipt.medium.queue.ConcurrentQueue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,7 +11,6 @@ public class QueueMediumTest {
     public void mustWaitWhenExecutedSequentially() throws InterruptedException {
         //given
         int capacity = 10;
-        //ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
         QueueMedium queueMedium = new QueueMedium(capacity);
         Token actual;
         Token expected = new Token();
@@ -29,7 +25,6 @@ public class QueueMediumTest {
     public void mustWaitWhenQueueIsEmpty() {
         //given
         int capacity = 10;
-        //ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
         QueueMedium medium = new QueueMedium(capacity);
         Thread thread = new Thread(() -> {
             try {
@@ -58,9 +53,7 @@ public class QueueMediumTest {
     public void mustWaitWhenTokenSlotIsOccupied() throws InterruptedException {
         //given
         int capacity = 1;
-        //ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
         Token token = new Token();
-        //queue.enq(token);
 
         QueueMedium medium = new QueueMedium(capacity);
         medium.push(token);

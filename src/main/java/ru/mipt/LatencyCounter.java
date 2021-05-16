@@ -39,7 +39,7 @@ public class LatencyCounter implements Runnable{
         if(counter < offset || counter > maxCounter) {
             return;
         }
-        latencies.add(System.currentTimeMillis() - t.getTime());
+        latencies.add(System.currentTimeMillis() - t.getTimeStamp());
     }
 
     public double countLatency() {

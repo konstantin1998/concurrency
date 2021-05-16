@@ -10,20 +10,15 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 public class App {
     public static void main(String[] args) throws InterruptedException {
-        List<TokenMedium> list = new ArrayList<>();
 
-        list.add(new FieldMedium());
-        list.add(new FieldMedium());
-        list.add(new FieldMedium());
-        list.add(new FieldMedium());
-        list.add(new FieldMedium());
-
-        TokenRing ring = new TokenRing(list);
-        System.out.println(ring);
-
-        Queue<Object> queue = new ArrayBlockingQueue<>(1);
+        Stream<Double> numberStream =  Stream.of(-4.0, 3.0, -2.0, 1.0);
+        double identity = 0;
+        Double result = numberStream.reduce(identity, Double::sum) / 4;
+        System.out.println(result);
+        Math.round(1.4);
     }
 }

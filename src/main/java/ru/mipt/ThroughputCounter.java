@@ -32,7 +32,7 @@ public class ThroughputCounter implements Runnable{
 
     private void consume(Token t) {
         long currTime = System.currentTimeMillis();
-        t.setTime(currTime);
+        t.setTimeStamp(currTime);
 
         if (counter == offset) {
             startTime = currTime;

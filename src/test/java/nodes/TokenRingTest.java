@@ -6,8 +6,6 @@ import ru.mipt.TokenRing;
 import ru.mipt.medium.FieldMedium;
 import ru.mipt.medium.QueueMedium;
 import ru.mipt.medium.TokenMedium;
-import ru.mipt.medium.queue.BoundedLockQueue;
-import ru.mipt.medium.queue.ConcurrentQueue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +46,6 @@ public class TokenRingTest {
 
         List<TokenMedium> mediums = new ArrayList<>();
         for(int i = 0; i < nMediums; i++) {
-            //ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
             mediums.add(new QueueMedium(capacity));
         }
 

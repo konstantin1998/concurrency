@@ -3,7 +3,7 @@ package ru.mipt;
 public class Token {
     private int id;
 
-    private long time;
+    private long timeStamp;
 
     public int getId() {
         return id;
@@ -13,11 +13,11 @@ public class Token {
         this.id = id;
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
-    public long getTime() {
-        return time;
+    public long getTimeStamp() {
+        return timeStamp;
     }
 }
