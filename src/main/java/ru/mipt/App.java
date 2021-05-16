@@ -1,10 +1,15 @@
 package ru.mipt;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.mipt.medium.FieldMedium;
 import ru.mipt.medium.TokenMedium;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
 
 public class App {
     public static void main(String[] args) throws InterruptedException {
@@ -18,5 +23,7 @@ public class App {
 
         TokenRing ring = new TokenRing(list);
         System.out.println(ring);
+
+        Queue<Object> queue = new ArrayBlockingQueue<>(1);
     }
 }

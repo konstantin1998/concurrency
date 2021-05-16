@@ -1,4 +1,4 @@
-package mediums;
+package counters;
 
 import org.junit.Test;
 import ru.mipt.LatencyCounter;
@@ -17,16 +17,16 @@ public class LatencyCounterTest {
     public void mustCountThroughPutCorrectly() throws InterruptedException {
         //given
         int capacity = 50;
-        ConcurrentQueue<Token> inputQueue = new BoundedLockQueue<>(capacity);
-        TokenMedium input = new QueueMedium(inputQueue);
+        //ConcurrentQueue<Token> inputQueue = new BoundedLockQueue<>(capacity);
+        TokenMedium input = new QueueMedium(capacity);
         for(int i = 0; i < capacity; i++) {
             Token token = new Token();
             token.setTime(System.currentTimeMillis());
             input.push(token);
         }
 
-        ConcurrentQueue<Token> outputQueue = new BoundedLockQueue<>(capacity);
-        TokenMedium output = new QueueMedium(outputQueue);
+        //ConcurrentQueue<Token> outputQueue = new BoundedLockQueue<>(capacity);
+        TokenMedium output = new QueueMedium(capacity);
 
 
         int offset = 0;

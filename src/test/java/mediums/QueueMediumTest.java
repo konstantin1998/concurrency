@@ -14,8 +14,8 @@ public class QueueMediumTest {
     public void mustWaitWhenExecutedSequentially() throws InterruptedException {
         //given
         int capacity = 10;
-        ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
-        QueueMedium queueMedium = new QueueMedium(queue);
+        //ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
+        QueueMedium queueMedium = new QueueMedium(capacity);
         Token actual;
         Token expected = new Token();
         //when
@@ -29,8 +29,8 @@ public class QueueMediumTest {
     public void mustWaitWhenQueueIsEmpty() {
         //given
         int capacity = 10;
-        ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
-        QueueMedium medium = new QueueMedium(queue);
+        //ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
+        QueueMedium medium = new QueueMedium(capacity);
         Thread thread = new Thread(() -> {
             try {
                 medium.poll();
@@ -58,11 +58,12 @@ public class QueueMediumTest {
     public void mustWaitWhenTokenSlotIsOccupied() throws InterruptedException {
         //given
         int capacity = 1;
-        ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
+        //ConcurrentQueue<Token> queue = new BoundedLockQueue<>(capacity);
         Token token = new Token();
-        queue.enq(token);
+        //queue.enq(token);
 
-        QueueMedium medium = new QueueMedium(queue);
+        QueueMedium medium = new QueueMedium(capacity);
+        medium.push(token);
         Thread thread = new Thread(() -> {
             try {
                 medium.push(token);

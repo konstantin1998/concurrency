@@ -9,7 +9,7 @@ public class LatencyCounter implements Runnable{
     private final List<Long> latencies;
     private final int offset;
     private int counter;
-    private final int maxCounter = 1000;
+    private final int maxCounter = 10_000;
 
     private final TokenMedium input;
     private final TokenMedium output;

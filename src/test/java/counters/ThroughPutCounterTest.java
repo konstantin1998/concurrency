@@ -1,4 +1,4 @@
-package mediums;
+package counters;
 
 import org.junit.Test;
 import ru.mipt.Node;
@@ -17,14 +17,14 @@ public class ThroughPutCounterTest {
     public void mustCountThroughPutCorrectly() throws InterruptedException {
         //given
         int capacity = 30;
-        ConcurrentQueue<Token> inputQueue = new BoundedLockQueue<>(capacity);
-        TokenMedium input = new QueueMedium(inputQueue);
+        //ConcurrentQueue<Token> inputQueue = new BoundedLockQueue<>(capacity);
+        TokenMedium input = new QueueMedium(capacity);
         for(int i = 0; i < capacity; i++) {
             input.push(new Token());
         }
 
-        ConcurrentQueue<Token> outputQueue = new BoundedLockQueue<>(capacity);
-        TokenMedium output = new QueueMedium(outputQueue);
+        //ConcurrentQueue<Token> outputQueue = new BoundedLockQueue<>(capacity);
+        TokenMedium output = new QueueMedium(capacity);
 
 
         int offset = 0;

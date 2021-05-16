@@ -1,4 +1,4 @@
-package mediums;
+package nodes;
 
 import org.junit.Test;
 import ru.mipt.Node;
