@@ -20,7 +20,7 @@ public class TokenRing {
             if(i == 0) {
                 TokenMedium input = mediums.get(mediums.size() - 1);
                 TokenMedium output = mediums.get(i);
-                throughputCounter = new ThroughputCounter(input, output, mediums.size());
+                throughputCounter = new ThroughputCounter(input, output);
                 Node node = new Node(throughputCounter);
                 nodes.add(node);
                 continue;
@@ -30,7 +30,7 @@ public class TokenRing {
             TokenMedium output = mediums.get(i);
 
             if(i == mediums.size() - 1) {
-                latencyCounter = new LatencyCounter(input, output, mediums.size());
+                latencyCounter = new LatencyCounter(input, output);
                 Node node = new Node(latencyCounter);
                 nodes.add(node);
                 continue;
@@ -44,6 +44,7 @@ public class TokenRing {
     public void initializeWithTokens(List<Token> tokens) {
         for(int i = 0; i < tokens.size(); i++) {
             TokenMedium medium = mediums.get(i % mediums.size());
+            throughputCounter.setOffset(tokens.size());
             try {
                 medium.push(tokens.get(i));
             } catch (InterruptedException e) {

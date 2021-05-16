@@ -7,14 +7,14 @@ import java.util.List;
 
 public class LatencyCounter implements Runnable{
     private final List<Long> latencies;
-    private final int offset;
+    private int offset = 1000;
     private int counter;
     private final int maxCounter = 10_000;
 
     private final TokenMedium input;
     private final TokenMedium output;
 
-    public LatencyCounter(TokenMedium input, TokenMedium output, int offset) {
+    public LatencyCounter(TokenMedium input, TokenMedium output) {
         this.latencies = new ArrayList<>(maxCounter);
         this.input = input;
         this.output = output;
@@ -50,5 +50,9 @@ public class LatencyCounter implements Runnable{
         }
 
         return avgLatency / latencies.size();
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 }

@@ -27,7 +27,8 @@ public class LatencyCounterTest {
 
 
         int offset = 0;
-        LatencyCounter calculator = new LatencyCounter(input, output, offset);
+        LatencyCounter calculator = new LatencyCounter(input, output);
+        calculator.setOffset(offset);
         //when
         Node node = new Node(calculator);
         node.start();

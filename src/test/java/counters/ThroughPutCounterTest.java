@@ -22,7 +22,8 @@ public class ThroughPutCounterTest {
         }
         TokenMedium output = new QueueMedium(capacity);
         int offset = 0;
-        ThroughputCounter calculator = new ThroughputCounter(input, output, offset);
+        ThroughputCounter calculator = new ThroughputCounter(input, output);
+        calculator.setOffset(offset);
         //when
         Node node = new Node(calculator);
         node.start();

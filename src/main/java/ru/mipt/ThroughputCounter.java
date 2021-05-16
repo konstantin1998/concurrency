@@ -3,14 +3,14 @@ package ru.mipt;
 import ru.mipt.medium.TokenMedium;
 
 public class ThroughputCounter implements Runnable{
-    private final int offset;
+    private int offset = 1000;
     private int counter;
     private long startTime;
     private long currentTime;
     private final TokenMedium input;
     private final TokenMedium output;
 
-    public ThroughputCounter(TokenMedium input, TokenMedium output, int offset) {
+    public ThroughputCounter(TokenMedium input, TokenMedium output) {
         this.input = input;
         this.output = output;
         this.offset = offset;
@@ -46,5 +46,9 @@ public class ThroughputCounter implements Runnable{
             throw new RuntimeException("there were too few iterations, unable to count throughput");
         }
         return (counter - offset) / ((double)(currentTime - startTime) / 1000);
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 }
