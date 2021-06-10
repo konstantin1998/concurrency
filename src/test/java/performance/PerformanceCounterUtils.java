@@ -32,6 +32,11 @@ public class PerformanceCounterUtils {
         saveScores(scores);
     }
 
+    public static void countAndSavePerformance(int nNodes, int load) {
+        List<Performance> scores = countScores(nNodes, load);
+        saveScores(scores);
+    }
+
     private static List<Performance> countScores(int nNodes, int load, int capacity) {
         int nIterations = 5;
         List<Performance> scores = new ArrayList<>();
@@ -39,6 +44,20 @@ public class PerformanceCounterUtils {
 
         for(int i = 0; i < nIterations; i++) {
             TokenRing tokenRing = initializer.getRing(nNodes, load, capacity);
+            Performance p = PerformanceCounterUtils.countPerformance(tokenRing);
+            scores.add(p);
+        }
+
+        return scores;
+    }
+
+    private static List<Performance> countScores(int nNodes, int load) {
+        int nIterations = 5;
+        List<Performance> scores = new ArrayList<>();
+        TokenRingInitializer initializer = new TokenRingInitializer();
+
+        for(int i = 0; i < nIterations; i++) {
+            TokenRing tokenRing = initializer.getRing(nNodes, load);
             Performance p = PerformanceCounterUtils.countPerformance(tokenRing);
             scores.add(p);
         }

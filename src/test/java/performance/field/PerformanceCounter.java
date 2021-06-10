@@ -8,35 +8,33 @@ import java.util.List;
 import org.junit.Test;
 
 public class PerformanceCounter {
+
+
     @Test
-    public void showFieldMediumPerformanceWhenLoadIsFixed() {
+    public void saveFieldMediumPerformanceWhenLoadIsFixed() {
         PerformanceCounterUtils.warmUpJvm();
+        PerformanceCounterUtils.removeSavedResults();
+
         int load = 2;
-        List<Performance> scores = new ArrayList<>();
         int from = 4;
         int to = 16;
         for(int i = from; i <= to; i++) {
-            scores.add(PerformanceCounterUtils.countAveragePerformance(i, load));
+            PerformanceCounterUtils.countAndSavePerformance(i, load);
         }
-
-        PerformanceCounterUtils.showResults(scores);
     }
-
 
     @Test
-    public void showFieldMediumPerformanceWhenNumberOfNodesIsFixed() {
+    public void saveFieldMediumPerformanceWhenNumberOfNodesIsFixed() {
         PerformanceCounterUtils.warmUpJvm();
-        int nNodes = 35;
+        PerformanceCounterUtils.removeSavedResults();
 
-        List<Performance> scores = new ArrayList<>();
+        int nNodes = 16;
         int maxLoad = nNodes - 1;
         for(int i = 1; i <= maxLoad; i++) {
-            scores.add(PerformanceCounterUtils.countAveragePerformance(nNodes, i));
+            PerformanceCounterUtils.countAndSavePerformance(nNodes, i);
         }
 
-        PerformanceCounterUtils.showResults(scores);
+
     }
-
-
 
 }
