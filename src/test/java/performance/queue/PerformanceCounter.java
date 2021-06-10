@@ -57,4 +57,20 @@ public class PerformanceCounter {
 
         PerformanceCounterUtils.showResults(scores);
     }
+
+    @Test
+    public void saveQueueMediumResultsWhenNodesAndLoadAreFixed() {
+        PerformanceCounterUtils.removeSavedResults();
+        int load = 150;
+        int nNodes = 8;
+        List<Performance> scores = new ArrayList<>();
+        int from = 20;
+        int to = 120;
+        int step = 10;
+        for(int i = from; i <= to; i += step) {
+            PerformanceCounterUtils.countAndSavePerformance(nNodes, load, i);
+        }
+
+
+    }
 }
