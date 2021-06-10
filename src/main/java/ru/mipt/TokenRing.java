@@ -8,7 +8,7 @@ import java.util.List;
 public class TokenRing {
     private final List<Node> nodes;
     private final List<TokenMedium> mediums;
-    private LatencyCounter latencyCounter;
+    private TokenWatcher tokenWatcher;
     private ThroughputCounter throughputCounter;
 
 
@@ -30,8 +30,8 @@ public class TokenRing {
             TokenMedium output = mediums.get(i);
 
             if(i == mediums.size() - 1) {
-                latencyCounter = new LatencyCounter(input, output);
-                Node node = new Node(latencyCounter);
+                tokenWatcher = new TokenWatcher(input, output);
+                Node node = new Node(tokenWatcher);
                 nodes.add(node);
                 continue;
             }
@@ -69,7 +69,7 @@ public class TokenRing {
         return throughputCounter.countThroughput();
     }
 
-    public double getLatency() {
-        return latencyCounter.countLatency();
+    public double getLatency(int time) {
+        return (double) time / tokenWatcher.getCounter();
     }
 }

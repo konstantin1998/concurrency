@@ -71,7 +71,7 @@ public class TokenRingTest {
         tokenRing.stop();
 
         double throughput = tokenRing.getThroughput();
-        double latency = tokenRing.getLatency();
+        double latency = tokenRing.getLatency(timeToSleep);
 
         assertTrue(throughput > 0);
         assertTrue(latency > 0);

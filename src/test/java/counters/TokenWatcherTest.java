@@ -1,7 +1,7 @@
 package counters;
 
 import org.junit.Test;
-import ru.mipt.LatencyCounter;
+import ru.mipt.TokenWatcher;
 import ru.mipt.Node;
 import ru.mipt.Token;
 
@@ -11,33 +11,29 @@ import ru.mipt.medium.TokenMedium;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LatencyCounterTest {
+public class TokenWatcherTest {
     @Test
-    public void mustCountThroughPutCorrectly() throws InterruptedException {
+    public void mustCountTokensCorrectly() throws InterruptedException {
         //given
         int capacity = 50;
+        Token token = new Token();
+
         TokenMedium input = new QueueMedium(capacity);
         for(int i = 0; i < capacity; i++) {
-            Token token = new Token();
-            token.setTimeStamp(System.currentTimeMillis());
             input.push(token);
         }
 
         TokenMedium output = new QueueMedium(capacity);
+        TokenWatcher calculator = new TokenWatcher(input, output);
 
-
-        int offset = 0;
-        LatencyCounter calculator = new LatencyCounter(input, output);
-        calculator.setOffset(offset);
         //when
         Node node = new Node(calculator);
         node.start();
         Thread.sleep(1000);
         node.stop();
 
-        double bigLatency = 50;
-        double latency = calculator.countLatency();
+        int tokenCount = calculator.getCounter();
         //then
-        assertTrue(latency < bigLatency);
+        assertEquals(capacity, tokenCount);
     }
 }
