@@ -13,20 +13,6 @@ public class PerformanceCounterUtils {
     private static String throughputsPath = "src/test/resources/throughputs.csv";
     private static String latenciesPath = "src/test/resources/latencies.csv";
 
-    public static Performance countAveragePerformance(int nNodes, int load, int capacity) {
-        int nIterations = 5;
-        List<Performance> scores = new ArrayList<>();
-        TokenRingInitializer initializer = new TokenRingInitializer();
-
-        for(int i = 0; i < nIterations; i++) {
-            TokenRing tokenRing = initializer.getRing(nNodes, load, capacity);
-            Performance p = PerformanceCounterUtils.countPerformance(tokenRing);
-            scores.add(p);
-        }
-
-        return PerformanceCounterUtils.getAveragePerformance(nIterations, scores);
-    }
-
     public static void countAndSavePerformance(int nNodes, int load, int capacity) {
         List<Performance> scores = countScores(nNodes, load, capacity);
         saveScores(scores);
@@ -34,11 +20,6 @@ public class PerformanceCounterUtils {
 
     public static void countAndSavePerformance(int nNodes, int load) {
         List<Performance> scores = countScores(nNodes, load);
-        saveScores(scores);
-    }
-
-    public static void countAndSaveExchangerPerformance(int nNodes, int load) {
-        List<Performance> scores = countExchangerScores(nNodes, load);
         saveScores(scores);
     }
 
@@ -70,19 +51,7 @@ public class PerformanceCounterUtils {
         return scores;
     }
 
-    private static List<Performance> countExchangerScores(int nNodes, int load) {
-        int nIterations = 5;
-        List<Performance> scores = new ArrayList<>();
-        TokenRingInitializer initializer = new TokenRingInitializer();
 
-        for(int i = 0; i < nIterations; i++) {
-            TokenRing tokenRing = initializer.getRingWithExchangers(nNodes, load);
-            Performance p = PerformanceCounterUtils.countPerformance(tokenRing);
-            scores.add(p);
-        }
-
-        return scores;
-    }
 
     private static void saveScores(List<Performance> scores) {
         try {
@@ -156,54 +125,6 @@ public class PerformanceCounterUtils {
         return p;
     }
 
-    public static Performance countAveragePerformance(int nNodes, int load) {
-        int nIterations = 5;
-        List<Performance> scores = new ArrayList<>();
-
-        TokenRingInitializer initializer = new TokenRingInitializer();
-
-        for(int i = 0; i < nIterations; i++) {
-            TokenRing tokenRing = initializer.getRing(nNodes, load);
-            Performance p = countPerformance(tokenRing);
-            scores.add(p);
-        }
-
-        double averageThroughput = scores
-                .stream()
-                .map(Performance::getThroughput)
-                .reduce((double) 0, Double::sum) / nIterations;
-        double averageLatency = scores
-                .stream()
-                .map(Performance::getLatency)
-                .reduce((double) 0, Double::sum) / nIterations;
-
-        Performance p = new Performance();
-        p.setThroughput(averageThroughput);
-        p.setLatency(averageLatency);
-
-        System.out.println("=================================");
-        System.out.println("average throughput: " + averageThroughput);
-        System.out.println("average latency: " + averageLatency);
-        return p;
-    }
-
-    public static void showResults(List<Performance> scores) {
-        List<Double> throughputs = scores
-                .stream()
-                .map(Performance::getThroughput)
-                .map((x) -> (double) Math.round(x))
-                .collect(Collectors.toList());
-        List<Double> latencies = scores
-                .stream()
-                .map(Performance::getLatency).map((x) -> {
-                    double a = x * 1000;
-                    return (double) (Math.round(a)) / 1000;
-                })
-                .collect(Collectors.toList());
-        System.out.println(" ");
-        System.out.println("throughputs: " + throughputs);
-        System.out.println("latencies: " + latencies);
-    }
 
     public static void warmUpJvm() {
         int n = 4;
