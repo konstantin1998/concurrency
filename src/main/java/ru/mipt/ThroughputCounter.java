@@ -3,7 +3,7 @@ package ru.mipt;
 import ru.mipt.medium.TokenMedium;
 
 public class ThroughputCounter implements Runnable{
-    private int offset = 1000;
+    private int offset = 50;
     private int counter;
     private long startTime;
     private long currentTime;
@@ -13,7 +13,6 @@ public class ThroughputCounter implements Runnable{
     public ThroughputCounter(TokenMedium input, TokenMedium output) {
         this.input = input;
         this.output = output;
-        this.offset = offset;
     }
 
     @Override

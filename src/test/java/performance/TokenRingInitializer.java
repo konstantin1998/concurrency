@@ -2,6 +2,7 @@ package performance;
 
 import ru.mipt.Token;
 import ru.mipt.TokenRing;
+import ru.mipt.medium.ExchangeMedium;
 import ru.mipt.medium.FieldMedium;
 import ru.mipt.medium.QueueMedium;
 import ru.mipt.medium.TokenMedium;
@@ -25,6 +26,13 @@ public class TokenRingInitializer {
         return tokenRing;
     }
 
+    public TokenRing getRingWithExchangers(int n, int nTokens) {
+        List<TokenMedium> mediums = getExchangerMediums(n);
+        TokenRing tokenRing = new TokenRing(mediums);
+        initializeWithTokens(tokenRing, nTokens);
+        return tokenRing;
+    }
+
     private List<TokenMedium> getMediums(int n) {
         List<TokenMedium> mediums = new ArrayList<>();
         for(int i = 0; i < n; i++) {
@@ -37,6 +45,14 @@ public class TokenRingInitializer {
         List<TokenMedium> mediums = new ArrayList<>();
         for(int i = 0; i < n; i++) {
             mediums.add(new QueueMedium(capacity));
+        }
+        return mediums;
+    }
+
+    private List<TokenMedium> getExchangerMediums(int n) {
+        List<TokenMedium> mediums = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            mediums.add(new ExchangeMedium());
         }
         return mediums;
     }

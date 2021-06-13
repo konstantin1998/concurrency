@@ -26,9 +26,9 @@ public class PerformanceCounter {
         PerformanceCounterUtils.warmUpJvm();
         PerformanceCounterUtils.removeSavedResults();
 
-        int capacity = 3;
-        int nNodes = 16;
-        int maxLoad = nNodes * capacity - 1;
+        int capacity = 1;
+        int nNodes = 40;
+        int maxLoad = 7;
         for(int i = 1; i <= maxLoad; i++) {
             PerformanceCounterUtils.countAndSavePerformance(nNodes, i, capacity);
         }
